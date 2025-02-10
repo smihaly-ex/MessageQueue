@@ -57,7 +57,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
-    # Build the solution
+    # Build the solution 
     - name: Build the solution
       run: dotnet build --configuration Release --no-restore
 
