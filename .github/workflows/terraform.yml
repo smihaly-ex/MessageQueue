@@ -61,24 +61,24 @@ jobs:
     - name: Build the solution
       run: dotnet build --configuration Release --no-restore
 
-    - name: Login to Azure
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_AD_CLIENT_ID }}
-        client-secret: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-        tenant-id: ${{ secrets.AZURE_AD_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    # - name: Login to Azure
+    #   uses: azure/login@v2
+    #   with:
+    #     client-id: ${{ secrets.AZURE_AD_CLIENT_ID }}
+    #     client-secret: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+    #     tenant-id: ${{ secrets.AZURE_AD_TENANT_ID }}
+    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Deploy Sender Function
-      uses: Azure/functions-action@v1
-      with:
-        app-name: "sender-function-app"
-        slot-name: 'Production'
-        package: "./Sender/bin/Release/net8.0"  # Path to your sender function app publish directory
+    # - name: Deploy Sender Function
+    #   uses: Azure/functions-action@v1
+    #   with:
+    #     app-name: "sender-function-app"
+    #     slot-name: 'Production'
+    #     package: "./Sender/bin/Release/net8.0"  # Path to your sender function app publish directory
 
-    - name: Deploy Receiver Function
-      uses: Azure/functions-action@v1
-      with:
-        app-name: "receiver-function-app"
-        slot-name: 'Production'
-        package: "./Receiver/bin/Release/net8.0"  # Path to your receiver function app publish directory
+    # - name: Deploy Receiver Function
+    #   uses: Azure/functions-action@v1
+    #   with:
+    #     app-name: "receiver-function-app"
+    #     slot-name: 'Production'
+    #     package: "./Receiver/bin/Release/net8.0"  # Path to your receiver function app publish directory
