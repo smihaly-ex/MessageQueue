@@ -30,6 +30,25 @@ jobs:
       id: validate
       run: terraform validate
 
+    - name: Check for Existing Resources
+      id: check-resources
+      run: |
+        if terraform state list; then
+          echo "resources_exist=true" >> $GITHUB_OUTPUT
+        else
+          echo "resources_exist=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Terraform Destroy (if resources exist)
+      if: steps.check-resources.outputs.resources_exist == 'true'
+      id: destroy
+      run: terraform destroy -auto-approve
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+
     - name: Terraform Plan
       id: plan
       run: terraform plan
