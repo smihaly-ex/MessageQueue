@@ -48,7 +48,7 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: "sender-function-app"
-        package: "./Senderbin/Release/net8.0"  # Path to your sender function app publish directory
+        package: "./Sender/bin/Release/net8.0"  # Path to your sender function app publish directory
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
@@ -59,7 +59,7 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: "receiver-function-app"
-        package: "./Receiverbin/Release/net8.0"  # Path to your receiver function app publish directory
+        package: "./Receiver/bin/Release/net8.0"  # Path to your receiver function app publish directory
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
