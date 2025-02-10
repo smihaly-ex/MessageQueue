@@ -44,10 +44,24 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
 
+    - name: Setup DotNet Environment
+      uses: actions/setup-dotnet@v4
+      with:
+          dotnet-version: '8.x'
+          
+    # Restore dependencies for the solution
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    # Build the solution
+    - name: Build the solution
+      run: dotnet build --configuration Release --no-restore
+
     - name: Deploy Sender Function
       uses: Azure/functions-action@v1
       with:
         app-name: "sender-function-app"
+        slot-name: 'Production'
         package: "./Sender/bin/Release/net8.0"  # Path to your sender function app publish directory
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
@@ -59,6 +73,7 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: "receiver-function-app"
+        slot-name: 'Production'
         package: "./Receiver/bin/Release/net8.0"  # Path to your receiver function app publish directory
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
