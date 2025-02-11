@@ -151,7 +151,7 @@
 
       - name: Set linuxFxVersion for Sender Function
         run: |
-          az functionapp config set --name ${{ env.SENDER_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --linux-fx-version DOTNET-ISOLATED|8.0
+          az functionapp config set --name ${{ env.SENDER_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --linux-fx-version "DOTNET-ISOLATED|8.0"
 
       - name: Deploy Sender Function
         run: |
@@ -165,7 +165,7 @@
 
       - name: Set linuxFxVersion for Receiver Function
         run: |
-          az functionapp config set --name ${{ env.RECEIVER_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --linux-fx-version DOTNET-ISOLATED|8.0
+          az functionapp config set --name ${{ env.RECEIVER_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --linux-fx-version "DOTNET-ISOLATED|8.0"
       
       - name: Deploy Receiver Function
         run: |
