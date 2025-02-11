@@ -81,7 +81,7 @@
       # Publish the function apps
       # Sender Function
       - name: Publish Sender Function
-        run: dotnet publish **/Sender.csproj -c Release -o ./publish
+        run: dotnet publish Sender.csproj -c Release -o ./publish
         working-directory: ${{ env.DOTNET_SENDER_FUNC_WORKING_DIR }}
 
       - name: Generate Deployment Package for Sender Function
@@ -97,7 +97,7 @@
       
       # Receiver Function
       - name: Publish Receiver Function
-        run: dotnet publish **/Receiver.csproj -c Release -o ./publish
+        run: dotnet publish Receiver.csproj -c Release -o ./publish
         working-directory: ${{ env.DOTNET_RECEIVER_FUNC_WORKING_DIR }}
 
       - name: Generate Deployment Package for Receiver Function
