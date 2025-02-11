@@ -149,6 +149,10 @@
           name: function-deployment-sender
           path: ${{ env.DOTNET_SENDER_FUNC_WORKING_DIR }}
 
+      - name: Set linuxFxVersion for Sender Function
+        run: |
+          az functionapp config set --name ${{ env.SENDER_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --linux-fx-version DOTNET-ISOLATED|8.0
+
       - name: Deploy Sender Function
         run: |
           az functionapp deployment source config-zip --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --name ${{ env.SENDER_APP_NAME }} --src ${{ env.DOTNET_SENDER_FUNC_WORKING_DIR }}/deployment.zip
@@ -158,6 +162,10 @@
         with:
           name: function-deployment-receiver
           path: ${{ env.DOTNET_RECEIVER_FUNC_WORKING_DIR }}
+
+      - name: Set linuxFxVersion for Receiver Function
+        run: |
+          az functionapp config set --name ${{ env.RECEIVER_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --linux-fx-version DOTNET-ISOLATED|8.0
       
       - name: Deploy Receiver Function
         run: |
