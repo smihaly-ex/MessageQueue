@@ -111,23 +111,6 @@
           name: function-deployment-receiver
           path: ${{ env.DOTNET_RECEIVER_FUNC_WORKING_DIR }}/deployment.zip
 
-      # # Publish the function apps
-      # - name: Deploy Sender Function
-      #   uses: Azure/functions-action@v1
-      #   id: sender
-      #   with:
-      #     app-name: "sender-function-app"
-      #     slot-name: 'Production'
-      #     package: "./Sender/bin/Release/net8.0"  # Path to your sender function app publish directory
-
-      # - name: Deploy Receiver Function
-      #   uses: Azure/functions-action@v1
-      #   id: receiver
-      #   with:
-      #     app-name: "receiver-function-app"
-      #     slot-name: 'Production'
-      #     package: "./Receiver/bin/Release/net8.0"  # Path to your receiver function app publish directory
-
     deploy:
       needs: [terraform, build]
       runs-on: ubuntu-latest
