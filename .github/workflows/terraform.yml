@@ -31,10 +31,16 @@
       - name: Terraform Init
         id: init
         run: terraform init
-      
-      # Checks that all Terraform configuration files adhere to a canonical format
-      # - name: Terraform Format
-      #   run: terraform fmt -check
+
+      - name: Check if Resource Group Exists
+        id: check_rg
+        run: |
+          if az group show --name message-resource-group --query id -o tsv; then
+            echo "Resource group exists. Importing into Terraform state..."
+            terraform import azurerm_resource_group.rg /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/message-resource-group
+          else
+            echo "Resource group does not exist. Terraform will create it."
+          fi
 
       - name: Terraform Validate
         id: validate
