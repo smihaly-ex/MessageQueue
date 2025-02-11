@@ -92,7 +92,7 @@
       - name: Upload Deployment Package for Sender Function
         uses: actions/upload-artifact@v4
         with:
-          name: function-deployment
+          name: function-deployment-sender
           path: ${{ env.DOTNET_SENDER_FUNC_WORKING_DIR }}/deployment.zip
       
       # Receiver Function
@@ -108,7 +108,7 @@
       - name: Upload Deployment Package for Receiver Function
         uses: actions/upload-artifact@v4
         with:
-          name: function-deployment
+          name: function-deployment-receiver
           path: ${{ env.DOTNET_RECEIVER_FUNC_WORKING_DIR }}/deployment.zip
 
       # # Publish the function apps
