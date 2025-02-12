@@ -40,7 +40,23 @@
       - name: Terraform Init
         id: init
         working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
-        run: terraform init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+          BACKEND_RESOURCE_GROUP_NAME: message-resource-group
+          BACKEND_STORAGE_ACCOUNT_NAME: stracc2002unique
+          BACKEND_STORAGE_CONTAINER_NAME: tfstate
+          TF_VAR_application_name: terraform-example
+          TF_VAR_environment_name: dev
+          TF_BACKEND_KEY: terraform-example-dev
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=$BACKEND_RESOURCE_GROUP_NAME" \
+            -backend-config="storage_account_name=$BACKEND_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME" \
+            -backend-config="key=$TF_BACKEND_KEY"
 
       - name: Terraform Validate
         id: validate
