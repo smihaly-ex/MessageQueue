@@ -8,9 +8,11 @@
   env:
     DOTNET_SENDER_FUNC_WORKING_DIR: "./Sender"
     DOTNET_RECEIVER_FUNC_WORKING_DIR: "./Receiver"
+    TERRAFORM_WORKING_DIRECTORY: "./terraform"
     AZURE_RESOURCE_GROUP: "message-resource-group"
     SENDER_APP_NAME: "sender-function-app"
     RECEIVER_APP_NAME: "receiver-function-app"
+    DOTNET_VERSION: "8.x"
 
   permissions:
     id-token: write
@@ -27,7 +29,6 @@
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_AD_CLIENT_ID }}
-          client-secret: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
           tenant-id: ${{ secrets.AZURE_AD_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
@@ -38,24 +39,17 @@
 
       - name: Terraform Init
         id: init
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
         run: terraform init
-
-      - name: Check if Resource Group Exists
-        id: check_rg
-        run: |
-          if az group show --name message-resource-group --query id -o tsv; then
-            echo "Resource group exists. Importing into Terraform state..."
-            terraform import azurerm_resource_group.rg /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/message-resource-group
-          else
-            echo "Resource group does not exist. Terraform will create it."
-          fi
 
       - name: Terraform Validate
         id: validate
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
         run: terraform validate
 
       - name: Terraform Plan
         id: plan
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
         run: terraform plan -input=false
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
@@ -65,6 +59,7 @@
 
       - name: Terraform Apply
         id: apply
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
         run: terraform apply -auto-approve -input=false
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
@@ -82,7 +77,7 @@
       - name: Setup DotNet Environment
         uses: actions/setup-dotnet@v4
         with:
-            dotnet-version: '8.x'
+            dotnet-version: ${{ env.DOTNET_VERSION }}
             
       # Restore dependencies for the solution
       - name: Restore dependencies
