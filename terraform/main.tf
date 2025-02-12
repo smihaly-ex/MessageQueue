@@ -29,7 +29,7 @@ resource "azurerm_service_plan" "plan" {
     location            = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     os_type             = "Linux"
-    sku_name            = "Y1" # Consumption plan for serverless functions
+    sku_name            = "Y1" # Consumption plan for serverless functions :)
 }
 
 resource "azurerm_linux_function_app" "sender_function" {
